@@ -2,10 +2,7 @@ package Ventanas;
 
 import Materials.CButton;
 import Materials.CLabel;
-import Ventanas.CRUD.VentanaCreate;
-import Ventanas.CRUD.VentanaDelete;
-import Ventanas.CRUD.VentanaRead;
-import Ventanas.CRUD.VentanaUpdate;
+import Ventanas.CRUD.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

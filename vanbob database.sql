@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2023 at 02:42 AM
+-- Generation Time: Oct 20, 2023 at 07:36 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -50,7 +50,8 @@ INSERT INTO `cliente` (`id_cliente`, `nombre`, `lealtad`) VALUES
 (10, 'GROHL ENTERPRISES', 22),
 (11, 'MichEnterprises', 8),
 (12, 'Pohls', 39),
-(14, 'BËR', 96);
+(14, 'BËR', 96),
+(15, 'YO', 99);
 
 -- --------------------------------------------------------
 
@@ -79,7 +80,9 @@ INSERT INTO `contacto` (`id_contacto`, `id_empleado`, `id_cliente`) VALUES
 (8, 4, 3),
 (9, 2, 2),
 (10, 3, 1),
-(11, 10, 14);
+(11, 10, 14),
+(12, 10, 12),
+(13, 10, 15);
 
 -- --------------------------------------------------------
 
@@ -109,7 +112,31 @@ INSERT INTO `departamento` (`id_depa`, `depa`) VALUES
 (10, 'Atencion cliente'),
 (11, 'Programacion'),
 (12, 'NewYorkers'),
-(13, 'AbuelitaMaldita');
+(13, 'AbuelitaMaldita'),
+(14, 'CocoChat'),
+(15, 'Juventus'),
+(16, 'Maruchan'),
+(17, 'Chips Fuego Crujientes'),
+(18, 'CastigoNal'),
+(19, 'Dinosaurios'),
+(20, 'PinkFloyd'),
+(21, 'The Wall'),
+(22, 'Dark Side of The Moon'),
+(23, 'Animals'),
+(24, 'The Division Bell'),
+(25, 'Final Cut'),
+(26, 'Wish You Were Here'),
+(27, 'PULSE'),
+(28, 'Piper at Gates of Dawn'),
+(29, 'The Killers'),
+(30, 'Hot Fuss'),
+(31, 'Sam\'s Town'),
+(32, 'Sawdust'),
+(33, 'Day&Age'),
+(34, 'Battle Born'),
+(35, 'Wonderful Wonderful'),
+(36, 'Imploding The Mirage'),
+(37, 'Pressure Machine');
 
 -- --------------------------------------------------------
 
@@ -139,6 +166,19 @@ INSERT INTO `empleado` (`id_empleado`, `id_depa`, `nombre`, `ape`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `empleadodepartamento`
+-- (See below for the actual view)
+--
+CREATE TABLE `empleadodepartamento` (
+`id_empleado` int(11)
+,`nombre` varchar(30)
+,`ape` varchar(30)
+,`depa` varchar(40)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ordena`
 --
 
@@ -163,7 +203,21 @@ INSERT INTO `ordena` (`id_orden`, `id_cliente`, `id_producto`, `orden`) VALUES
 (7, 7, 2, 984136),
 (8, 8, 10, 16576),
 (9, 8, 1, 1354),
-(10, 10, 5, 9413);
+(10, 10, 5, 9413),
+(11, 14, 7, 943);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ordenes`
+-- (See below for the actual view)
+--
+CREATE TABLE `ordenes` (
+`ID` int(11)
+,`Producto` varchar(30)
+,`Cliente` varchar(40)
+,`Orden` bigint(20)
+);
 
 -- --------------------------------------------------------
 
@@ -193,6 +247,45 @@ INSERT INTO `producto` (`id_producto`, `nombre`, `existentes`, `produciendo`) VA
 (8, 'Empaque AlbumTIPO1', 25000, 9435),
 (9, 'Empaque Pluma', 100000, 50000),
 (10, 'Plastico Computadora', 900, 96800);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `relaciones`
+-- (See below for the actual view)
+--
+CREATE TABLE `relaciones` (
+`ID` int(11)
+,`Empleado` varchar(30)
+,`Cliente` varchar(40)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `empleadodepartamento`
+--
+DROP TABLE IF EXISTS `empleadodepartamento`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `empleadodepartamento`  AS SELECT `e`.`id_empleado` AS `id_empleado`, `e`.`nombre` AS `nombre`, `e`.`ape` AS `ape`, `d`.`depa` AS `depa` FROM (`empleado` `e` join `departamento` `d` on(`e`.`id_depa` = `d`.`id_depa`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ordenes`
+--
+DROP TABLE IF EXISTS `ordenes`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ordenes`  AS SELECT `ordena`.`id_orden` AS `ID`, `producto`.`nombre` AS `Producto`, `cliente`.`nombre` AS `Cliente`, `ordena`.`orden` AS `Orden` FROM ((`ordena` join `producto` on(`ordena`.`id_producto` = `producto`.`id_producto`)) join `cliente` on(`ordena`.`id_cliente` = `cliente`.`id_cliente`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `relaciones`
+--
+DROP TABLE IF EXISTS `relaciones`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `relaciones`  AS SELECT `contacto`.`id_contacto` AS `ID`, `empleado`.`nombre` AS `Empleado`, `cliente`.`nombre` AS `Cliente` FROM ((`contacto` join `empleado` on(`contacto`.`id_empleado` = `empleado`.`id_empleado`)) join `cliente` on(`contacto`.`id_cliente` = `cliente`.`id_cliente`)) ;
 
 --
 -- Indexes for dumped tables
@@ -247,19 +340,19 @@ ALTER TABLE `producto`
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `contacto`
 --
 ALTER TABLE `contacto`
-  MODIFY `id_contacto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_contacto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `departamento`
 --
 ALTER TABLE `departamento`
-  MODIFY `id_depa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_depa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `empleado`
@@ -271,7 +364,7 @@ ALTER TABLE `empleado`
 -- AUTO_INCREMENT for table `ordena`
 --
 ALTER TABLE `ordena`
-  MODIFY `id_orden` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_orden` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `producto`
