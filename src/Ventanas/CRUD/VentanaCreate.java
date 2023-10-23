@@ -22,7 +22,7 @@ public class VentanaCreate extends JFrame {
     List<Producto> productos;
     String opcionesClientes[], opcionesEmpleados[], opcionesDepartamentos[], opcionesProductos[];
     CLabel lblBienvenida, lblTable;
-    String opcionesTable[] = {"Cliente", "Contacto", "Departamento", "Empleado", "Ordena", "Producto"};
+    String opcionesTable[] = {"Cliente", "Departamento", "Empleado", "Ordena", "Producto"};
     int navegadorTABLE=0;
     CButton btnAgregar, btnLeftTable, btnRightTable;
     //endregion
@@ -34,8 +34,7 @@ public class VentanaCreate extends JFrame {
     //endregion
     //region TableContacto
     CLabel lblCliente;
-    JComboBox pickClient, pickEmpleado;
-    CLabel lblEmpleado, lblContactoTable;
+    JComboBox pickClient;
     //endregion
     //region TableDepartamento
     CLabel lblDepartamentoTable;
@@ -70,8 +69,6 @@ public class VentanaCreate extends JFrame {
         lblCliente = new CLabel("Cliente:", 20);
         lblYears = new CLabel("Años con Nosotros:", 20);
         lblYearsDisplay = new CLabel(String.valueOf(years), 20);
-        lblContactoTable = new CLabel("Agregar a Contacto", 30);
-        lblEmpleado = new CLabel("Empleado:", 20);
         lblDepartamentoTable = new CLabel("Agregar a Departamento", 30);
         lblEmpleadoTable = new CLabel("Agregar un Empleado", 30);
         lblApellido = new CLabel("Apellido", 20);
@@ -140,12 +137,6 @@ public class VentanaCreate extends JFrame {
                     lblYearsDisplay.setText(String.valueOf(years));
                     break;
                 }
-                case "Contacto":{
-                    Cliente cliente = clientes.get(pickClient.getSelectedIndex());
-                    Empleado empleado = empleados.get(pickEmpleado.getSelectedIndex());
-                    BD.agregarContacto(empleado.getIdEmpleado(), cliente.getIdCliente());
-                    break;
-                }
                 case "Departamento":{
                     if(!Objects.equals(txtNombre.getText(), "")){
                         BD.agregarDepartamento(txtNombre.getText());
@@ -184,7 +175,6 @@ public class VentanaCreate extends JFrame {
     }
     void setPickers(){
         pickClient = new JComboBox(opcionesClientes);
-        pickEmpleado = new JComboBox(opcionesEmpleados);
         pickDepartamento = new JComboBox(opcionesDepartamentos);
         pickProducto = new JComboBox(opcionesProductos);
     }
@@ -200,10 +190,6 @@ public class VentanaCreate extends JFrame {
         switch (lblTable.getText()){
             case "Cliente":{
                 setLayout(layoutCliente());
-                break;
-            }
-            case "Contacto":{
-                setLayout(layoutContacto());
                 break;
             }
             case "Departamento":{
@@ -310,62 +296,6 @@ public class VentanaCreate extends JFrame {
                                                         .addComponent(btnMinus)
                                                         .addComponent(lblYearsDisplay)
                                                         .addComponent(btnMore)
-                                        )
-                        )
-                        .addComponent(btnAgregar)
-        );
-        return lC;
-    }
-    GroupLayout layoutContacto(){
-        GroupLayout lC = new GroupLayout(getContentPane());
-        lC.setAutoCreateGaps(true);
-        lC.setAutoCreateContainerGaps(true);
-        lC.setHorizontalGroup(
-                lC.createParallelGroup(GroupLayout.Alignment.CENTER)
-                        .addComponent(lblBienvenida)
-                        .addGroup(
-                                lC.createSequentialGroup()
-                                        .addComponent(btnLeftTable)
-                                        .addComponent(lblTable)
-                                        .addComponent(btnRightTable)
-                        )
-                        .addGroup(
-                                lC.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                        .addComponent(lblContactoTable)
-                                        .addGroup(
-                                                lC.createSequentialGroup()
-                                                        .addComponent(lblCliente)
-                                                        .addComponent(pickClient)
-                                        )
-                                        .addGroup(
-                                                lC.createSequentialGroup()
-                                                        .addComponent(lblEmpleado)
-                                                        .addComponent(pickEmpleado)
-                                        )
-                        )
-                        .addComponent(btnAgregar)
-        );
-        lC.setVerticalGroup(
-                lC.createSequentialGroup()
-                        .addComponent(lblBienvenida)
-                        .addGroup(
-                                lC.createParallelGroup()
-                                        .addComponent(btnLeftTable)
-                                        .addComponent(lblTable)
-                                        .addComponent(btnRightTable)
-                        )
-                        .addGroup(
-                                lC.createSequentialGroup()
-                                        .addComponent(lblContactoTable)
-                                        .addGroup(
-                                                lC.createParallelGroup()
-                                                        .addComponent(lblCliente)
-                                                        .addComponent(pickClient)
-                                        )
-                                        .addGroup(
-                                                lC.createParallelGroup()
-                                                        .addComponent(lblEmpleado)
-                                                        .addComponent(pickEmpleado)
                                         )
                         )
                         .addComponent(btnAgregar)

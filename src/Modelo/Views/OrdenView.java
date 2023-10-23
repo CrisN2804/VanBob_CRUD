@@ -6,6 +6,7 @@ public class OrdenView {
     private String cliente;
     private long orden;
 
+
     public OrdenView(int id, String producto, String cliente, long orden){
         setIdOrden(id);
         setProducto(producto);

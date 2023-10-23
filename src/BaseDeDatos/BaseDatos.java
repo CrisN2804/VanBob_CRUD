@@ -5,9 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import Modelo.*;
-import Modelo.Views.ContactoView;
-import Modelo.Views.EmpleadoView;
-import Modelo.Views.OrdenView;
+import Modelo.Views.*;
 
 public class BaseDatos {
     Connection connection;
@@ -37,18 +35,6 @@ public class BaseDatos {
             System.out.println(sqlException.getMessage());
         }
     }
-    public void agregarContacto(int idEmpleado, int idCliente){
-        PreparedStatement sql;
-        try{
-            sql = connection.prepareStatement("insert into contacto(id_empleado, id_cliente) " +
-                    "values(?,?)");
-            sql.setInt(1, idEmpleado);
-            sql.setInt(2, idCliente);
-            sql.executeUpdate();
-        }catch (SQLException sqlException){
-            System.out.println(sqlException.getMessage());
-        }
-    }
     public void agregarDepartamento(String nombre){
         PreparedStatement sql;
         try{
@@ -62,7 +48,7 @@ public class BaseDatos {
     public void agregarEmpleado(int idDepartamento, String nombre, String apellido){
         PreparedStatement sql;
         try{
-            sql = connection.prepareStatement("insert into empleado(id_depa, nombre, ape, fechana)" +
+            sql = connection.prepareStatement("insert into empleado(id_depa, nombre, ape)" +
                     "values(?,?,?)");
             sql.setInt(1, idDepartamento);
             sql.setString(2, nombre);
@@ -112,25 +98,6 @@ public class BaseDatos {
                         resultSet.getInt("lealtad")
                         )
                 );
-            }
-        }catch (SQLException sqlException){
-            System.out.println(sqlException.getMessage());
-        }
-        return resultados;
-    }
-    public List<Contacto> leerTodosContactos(){
-        List<Contacto> resultados = new ArrayList<>();
-        PreparedStatement sql;
-        ResultSet resultSet;
-        try {
-            sql = connection.prepareStatement("select * from contacto");
-            resultSet=sql.executeQuery();
-            while(resultSet.next()){
-                resultados.add(new Contacto(
-                        resultSet.getInt("id_contacto"),
-                        resultSet.getInt("id_empleado"),
-                        resultSet.getInt("id_cliente")
-                ));
             }
         }catch (SQLException sqlException){
             System.out.println(sqlException.getMessage());
@@ -226,20 +193,6 @@ public class BaseDatos {
             sql.setInt(2, cliente.getLealtad());
             sql.setInt(3, cliente.getIdCliente());
             rs= sql.executeUpdate();
-        }catch (SQLException sqlException){
-            System.out.println(sqlException.getMessage());
-        }
-        return rs==1;
-    }
-    public boolean actualizarContacto(Contacto contacto){
-        PreparedStatement sql;
-        int rs=0;
-        try {
-            sql = connection.prepareStatement("update contacto set id_empleado=?, id_cliente=? where id_contacto=?");
-            sql.setInt(1, contacto.getIdEmpleado());
-            sql.setInt(2, contacto.getIdCliente());
-            sql.setInt(3, contacto.getIdContacto());
-            rs = sql.executeUpdate();
         }catch (SQLException sqlException){
             System.out.println(sqlException.getMessage());
         }
@@ -398,25 +351,6 @@ public class BaseDatos {
                         resultSet.getString("nombre"),
                         resultSet.getString("ape"),
                         resultSet.getString("depa")
-                ));
-            }
-        }catch (SQLException sqlException){
-            System.out.println(sqlException.getMessage());
-        }
-        return resultados;
-    }
-    public List<ContactoView> leerTodosContactosView(){
-        List<ContactoView> resultados = new ArrayList<>();
-        PreparedStatement sql;
-        ResultSet resultSet;
-        try {
-            sql = connection.prepareStatement("select * from relaciones");
-            resultSet=sql.executeQuery();
-            while(resultSet.next()){
-                resultados.add(new ContactoView(
-                        resultSet.getInt("ID"),
-                        resultSet.getString("Empleado"),
-                        resultSet.getString("Cliente")
                 ));
             }
         }catch (SQLException sqlException){

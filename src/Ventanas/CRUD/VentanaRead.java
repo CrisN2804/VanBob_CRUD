@@ -4,9 +4,7 @@ import BaseDeDatos.BaseDatos;
 import Materials.CButton;
 import Materials.CLabel;
 import Modelo.*;
-import Modelo.Views.ContactoView;
-import Modelo.Views.EmpleadoView;
-import Modelo.Views.OrdenView;
+import Modelo.Views.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,7 +13,7 @@ import java.util.List;
 
 public class VentanaRead extends JFrame {
     BaseDatos BD= new BaseDatos();
-    String opcionesTable[] = {"Cliente", "Contacto", "Departamento", "Empleado", "Ordena", "Producto"};
+    String opcionesTable[] = {"Cliente", "Departamento", "Empleado", "Ordena", "Producto"};
     CLabel lblBienvenida, lblTable;
     CButton btnLeftTable, btnRightTable;
     JScrollPane sp;
@@ -91,10 +89,6 @@ public class VentanaRead extends JFrame {
                 sp.setViewportView(tableCliente());
                 break;
             }
-            case "Contacto":{
-                sp.setViewportView(tableContacto());
-                break;
-            }
             case "Departamento":{
                 sp.setViewportView(tableDepartamento());
                 break;
@@ -150,25 +144,6 @@ public class VentanaRead extends JFrame {
             };
         };
         return j;
-    }
-    JTable tableContacto(){
-        JTable table;
-        List<ContactoView> contactos = BD.leerTodosContactosView();
-        String[][] data = new String[contactos.size()][3];
-        int navegador=0;
-        for (ContactoView  contacto: contactos) {
-            data[navegador][0] = String.valueOf(contacto.getId());
-            data[navegador][1] = contacto.getEmpleado();
-            data[navegador][2] = contacto.getCliente();
-            navegador++;
-        }
-        String[] columnas = {"ID Contacto", "Empleado", "Cliente"};
-        table= new JTable(data, columnas){
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            };
-        };
-        return table;
     }
     JTable tableEmpleado(){
         JTable table;
