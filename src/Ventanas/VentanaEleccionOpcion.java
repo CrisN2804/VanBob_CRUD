@@ -10,11 +10,10 @@ import java.awt.event.ActionListener;
 
 public class VentanaEleccionOpcion extends JFrame {
     CLabel lblBienvenida;
-    CButton btnCreate, btnRead, btnUpdate, btnDelete;
+    CButton btnCreate, btnRead, btnDeleteUpdate;
     VentanaCreate wdwCreate = new VentanaCreate();
     VentanaRead wdwRead = new VentanaRead();
-    VentanaUpdate wdwUpdate = new VentanaUpdate();
-    VentanaDelete wdwDelete = new VentanaDelete();
+    VentanaDelete wdwDeleteUpdate = new VentanaDelete();
     public VentanaEleccionOpcion(){
         super("Menú");
         creacionVentana();
@@ -25,8 +24,7 @@ public class VentanaEleccionOpcion extends JFrame {
         lblBienvenida = new CLabel("¿Que deseas hacer?", 40);
         btnCreate = new CButton("Crear", sizeButtons);
         btnRead = new CButton("Leer", sizeButtons);
-        btnUpdate = new CButton("Actualizar", sizeButtons);
-        btnDelete = new CButton("Eliminar", sizeButtons);
+        btnDeleteUpdate = new CButton("Actualizar/Eliminar", sizeButtons);
 
         GroupLayout groupLayout = new GroupLayout(getContentPane());
         groupLayout.setAutoCreateContainerGaps(true);
@@ -39,8 +37,7 @@ public class VentanaEleccionOpcion extends JFrame {
                                 groupLayout.createSequentialGroup()
                                         .addComponent(btnCreate)
                                         .addComponent(btnRead)
-                                        .addComponent(btnUpdate)
-                                        .addComponent(btnDelete)
+                                        .addComponent(btnDeleteUpdate)
                         )
         );
         groupLayout.setVerticalGroup(
@@ -51,8 +48,7 @@ public class VentanaEleccionOpcion extends JFrame {
                                 groupLayout.createParallelGroup()
                                         .addComponent(btnCreate)
                                         .addComponent(btnRead)
-                                        .addComponent(btnUpdate)
-                                        .addComponent(btnDelete)
+                                        .addComponent(btnDeleteUpdate)
                         )
         );
         setLayout(groupLayout);
@@ -63,29 +59,19 @@ public class VentanaEleccionOpcion extends JFrame {
         btnCreate.addActionListener(e -> {
             wdwCreate.setVisible(true);
             wdwRead.setVisible(false);
-            wdwUpdate.setVisible(false);
-            wdwDelete.setVisible(false);
+            wdwDeleteUpdate.setVisible(false);
         });
 
         btnRead.addActionListener(e -> {
             wdwRead.setVisible(true);
             wdwCreate.setVisible(false);
-            wdwUpdate.setVisible(false);
-            wdwDelete.setVisible(false);
+            wdwDeleteUpdate.setVisible(false);
         });
 
-        btnUpdate.addActionListener(e -> {
-            wdwUpdate.setVisible(true);
+        btnDeleteUpdate.addActionListener(e -> {
+            wdwDeleteUpdate.setVisible(true);
             wdwCreate.setVisible(false);
             wdwRead.setVisible(false);
-            wdwDelete.setVisible(false);
-        });
-
-        btnDelete.addActionListener(e -> {
-            wdwDelete.setVisible(true);
-            wdwCreate.setVisible(false);
-            wdwRead.setVisible(false);
-            wdwUpdate.setVisible(false);
         });
     }
 }

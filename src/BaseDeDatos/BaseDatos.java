@@ -1,7 +1,6 @@
 package BaseDeDatos;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import Modelo.*;
@@ -230,8 +229,8 @@ public class BaseDatos {
         PreparedStatement sql;
         int rs=0;
         try {
-            sql = connection.prepareStatement("update ordena set id_orden=?,id_producto=?, orden=? where id_orden=?");
-            sql.setInt(1, orden.getIdOrden());
+            sql = connection.prepareStatement("update ordena set id_cliente=?,id_producto=?, orden=? where id_orden=?");
+            sql.setInt(1, orden.getIdCliente());
             sql.setInt(2, orden.getIdProducto());
             sql.setLong(3, orden.getPedido());
             sql.setInt(4, orden.getIdOrden());
