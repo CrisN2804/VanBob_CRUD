@@ -818,7 +818,7 @@ public class VentanaDelete extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if(!ordenes.isEmpty()){
                     int id = Integer.parseInt(lblIdShow.getText());
-                    BD.borrarEmpleado(id);
+                    BD.borrarOrden(id);
                     ordenes = BD.leerTodasOrdenes();
                     if(x == ordenes.size()){
                         x--;
@@ -848,6 +848,169 @@ public class VentanaDelete extends JFrame {
         JPanel aux = new JPanel();
         x=0;
         producto = productos.get(x);
+        CLabel lblID, lblIdShow, lblNombre, lblExistentes, lblProduciendo;
+        CTextField txtNombre;
+        SpinnerNumberModel spinnerModelExistentes, spinnerModelProduciendo;
+        JSpinner spinnerExistentes, spinnerProduciendo;
+        CButton btnDelete, btnSave, btnLeft, btnRight;
+        lblID = new CLabel("ID:", 20);
+        lblIdShow = new CLabel(String.valueOf(producto.getIdProducto()), 20);
+        lblNombre = new CLabel("Nombre:", 20);
+        lblExistentes = new CLabel("Existentes:", 20);
+        lblProduciendo = new CLabel("Produciendo:", 20);
+        txtNombre = new CTextField(100, 20);
+        spinnerModelExistentes = new SpinnerNumberModel(0, 0, 10000000, 1);
+        spinnerModelProduciendo = new SpinnerNumberModel(0,0,10000000, 1);
+        spinnerExistentes = new JSpinner(spinnerModelExistentes);
+        spinnerProduciendo = new JSpinner(spinnerModelProduciendo);
+        btnDelete = new CButton("B", 10);
+        btnLeft = new CButton("<", 20);
+        btnRight = new CButton(">", 20);
+        btnSave = new CButton("Save", 20);
+        txtNombre.setText(producto.getNombre());
+        spinnerExistentes.setValue(producto.getExistentes());
+        spinnerProduciendo.setValue(producto.getProduciendo());
+        GroupLayout gl = new GroupLayout(aux);
+        gl.setAutoCreateContainerGaps(true);
+        gl.setAutoCreateGaps(true);
+        gl.setHorizontalGroup(
+                gl.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addGroup(
+                                gl.createSequentialGroup()
+                                        .addComponent(lblID)
+                                        .addComponent(lblIdShow)
+                                        .addGap(140)
+                                        .addComponent(btnDelete)
+                        )
+                        .addGroup(
+                                gl.createSequentialGroup()
+                                        .addComponent(lblNombre)
+                                        .addComponent(txtNombre)
+                        )
+                        .addGroup(
+                                gl.createSequentialGroup()
+                                        .addComponent(lblExistentes)
+                                        .addComponent(spinnerExistentes)
+                        )
+                        .addGroup(
+                                gl.createSequentialGroup()
+                                        .addComponent(lblProduciendo)
+                                        .addComponent(spinnerProduciendo)
+                        )
+                        .addGroup(
+                                gl.createSequentialGroup()
+                                        .addComponent(btnLeft)
+                                        .addComponent(btnSave)
+                                        .addComponent(btnRight)
+                        )
+        );
+        gl.setVerticalGroup(
+                gl.createSequentialGroup()
+                        .addGroup(
+                                gl.createParallelGroup()
+                                        .addComponent(lblID)
+                                        .addComponent(lblIdShow)
+                                        .addComponent(btnDelete)
+                        )
+                        .addGroup(
+                                gl.createParallelGroup()
+                                        .addComponent(lblNombre)
+                                        .addComponent(txtNombre)
+                        )
+                        .addGroup(
+                                gl.createParallelGroup()
+                                        .addComponent(lblExistentes)
+                                        .addComponent(spinnerExistentes)
+                        )
+                        .addGroup(
+                                gl.createParallelGroup()
+                                        .addComponent(lblProduciendo)
+                                        .addComponent(spinnerProduciendo)
+                        )
+                        .addGroup(
+                                gl.createParallelGroup()
+                                        .addComponent(btnLeft)
+                                        .addComponent(btnSave)
+                                        .addComponent(btnRight)
+                        )
+        );
+        aux.setLayout(gl);
+
+        btnRight.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                productos = BD.leerTodosProductos();
+                if(!productos.isEmpty()){
+                    if(x != productos.size()-1){
+                        x++;
+                    }else{
+                        x=0;
+                    }
+                }
+                producto = productos.get(x);
+                lblIdShow.setText(String.valueOf(producto.getIdProducto()));
+                txtNombre.setText(producto.getNombre());
+                spinnerExistentes.setValue(producto.getExistentes());
+                spinnerProduciendo.setValue(producto.getProduciendo());
+            }
+        });
+        btnLeft.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                productos = BD.leerTodosProductos();
+                if(!productos.isEmpty()){
+                    if(x!=0){
+                        x--;
+                    }else{
+                        x=productos.size()-1;
+                    }
+                }
+                producto = productos.get(x);
+                lblIdShow.setText(String.valueOf(producto.getIdProducto()));
+                txtNombre.setText(producto.getNombre());
+                spinnerExistentes.setValue(producto.getExistentes());
+                spinnerProduciendo.setValue(producto.getProduciendo());
+            }
+        });
+        btnSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int id = Integer.parseInt(lblIdShow.getText());
+                Integer existentes = (Integer) spinnerExistentes.getValue();
+                Integer produciendo = (Integer) spinnerProduciendo.getValue();
+                producto = new Producto(id, txtNombre.getText(), existentes.longValue(), produciendo.longValue());
+                if(!productos.isEmpty()){
+                    boolean res = BD.actualizarProducto(producto);
+                    if(res){
+                        System.out.println("Se ejecutó la actualizacion");
+                    }else{
+                        System.out.println("No se ejecutó la actualización");
+                    }
+                    productos = BD.leerTodosProductos();
+                }
+            }
+        });
+        btnDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!productos.isEmpty()){
+                    int id = Integer.parseInt(lblIdShow.getText());
+                    BD.borrarProducto(id);
+                    ordenes = BD.leerTodasOrdenes();
+                    if(x == productos.size()){
+                        x--;
+                    }
+                    if(!productos.isEmpty()){
+                        producto = productos.get(x);
+                        lblIdShow.setText(String.valueOf(producto.getIdProducto()));
+                        txtNombre.setText(producto.getNombre());
+                        spinnerExistentes.setValue(producto.getExistentes());
+                        spinnerProduciendo.setValue(producto.getProduciendo());
+                    }
+                }
+            }
+        });
+
         return aux;
     }
 }
